@@ -45,8 +45,8 @@ public class Robot extends TimedRobot {
     <div className=" bg-fu flex flex-col h-screen p-5">
       {/* Full-Width Section Above */}
       <div className="w-full bg-funkyGray2 text-white text-center p-5 rounded-lg mb-5">
-        <h1 className="text-4xl font-bold">Welcome to the Robot Simulator</h1>
-        <p className="text-lg mt-2">Edit the code on the left and visualize the motor's speed on the right.</p>
+        <h1 className="text-4xl text-funkyYellow font-bold">Welcome to the Robot Simulator</h1>
+        <p className="text-lg text-funkyYellow mt-2">Edit the code on the left and visualize the motor's speed on the right</p>
     <div className=" bg-fu flex p-5 h-screen">
       {/* Left Column for the AceEditor */}
       <div className="flex-1 pr-5">
