@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         />
         <div className="text-center mt-3">
           <button
-            className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-"
+            className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"
             onClick={handleCodeRun}
           >
             Run Code
