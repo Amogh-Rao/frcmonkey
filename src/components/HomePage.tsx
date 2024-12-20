@@ -24,9 +24,9 @@ const HomePage: React.FC = () => {
       <div className="bg-funkyGray rounded-lg p-6 w-full md:w-1/3 text-center">
         <h2 className="text-3xl font-bold text-funkyYellow">What is FRCMonkey?</h2>
         <p className="text-2xl text-funkyYellow mt-2">
-        FRCMonkey is your ultimate resource for mastering FRC robot programming.
-        With hands-on lessons and interactive simulations, you'll quickly build
-        the skills needed to elevate your robot control to the next level!
+          FRCMonkey is your ultimate resource for mastering FRC robot programming.
+          With hands-on lessons and interactive simulations, you'll quickly build
+          the skills needed to elevate your robot control to the next level!
         </p>
 
         {/* Button below About FRCMonkey */}
@@ -41,22 +41,22 @@ const HomePage: React.FC = () => {
       {/* Right Section - Reference Links (Buttons with hover effects) */}
       <div className="flex flex-col space-y-6 w-full md:w-1/3">
         <div className="bg-funkyGray text-center rounded-lg p-3 flex-1">
-          <h4 className="text-xl font-bold text-funkyYellow">Java Documentation</h4>
-          <button 
-            className="w-full mt-3 bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
-            onClick={() => window.open('https://docs.oracle.com/en/java/', '_blank')}
+          <h4 className="text-xl font-bold text-funkyYellow">Java Overview</h4>
+          <Link 
+            to="/java-overview"
+            className="w-full mt-3 block bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
           >
             Learn Java
-          </button>
+          </Link>
         </div>
         <div className="bg-funkyGray text-center rounded-lg p-3 flex-1">
           <h4 className="text-xl font-bold text-funkyYellow">Git Basics</h4>
-          <button 
-            className="w-full mt-3 bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
-            onClick={() => window.open('https://git-scm.com/doc', '_blank')}
+          <Link 
+            to="/git-overview"
+            className="w-full mt-3 block bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
           >
             Learn Git
-          </button>
+          </Link>
         </div>
         <div className="bg-funkyGray text-center rounded-lg p-3 flex-1">
           <h4 className="text-xl font-bold text-funkyYellow">WPILib Documentation</h4>

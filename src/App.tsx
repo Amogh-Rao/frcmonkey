@@ -3,6 +3,9 @@ import './index.css';
 
 import HomePage from './components/HomePage';
 import RobotSimulator from './components/RobotSimulator';
+import JavaOverview from './components/JavaOverview';
+import GitOverview from './components/GitOverview'; // Adjust the path based on your folder structure
+
 
 function App() {
   return (
@@ -12,7 +15,7 @@ function App() {
         <header className="p-5 flex items-center justify-between bg-funkyGray2">
           {/* Home Icon */}
           <Link to="/" className="flex items-center text-funkyYellow hover:text-funkyGold">
-            <span className="material-icons text-3xl">home</span> {/* Home icon */}
+            <span className="material-icons text-3xl">home</span>
           </Link>
 
           {/* Title and Subtitle */}
@@ -26,6 +29,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/robot-simulator" element={<RobotSimulator />} />
+          <Route path="/java-overview" element={<JavaOverview />} />
+          <Route path="/git-overview" element={<GitOverview />} />
         </Routes>
       </div>
     </Router>
