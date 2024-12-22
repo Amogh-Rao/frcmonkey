@@ -79,6 +79,7 @@ const RobotSimulator: React.FC = () => {
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
+
   };
 
   return (
@@ -87,22 +88,26 @@ const RobotSimulator: React.FC = () => {
       {alertVisible && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-funkyBlack text-funkyYellow p-5 rounded-lg shadow-lg z-50">
           <p>{alertMessage}</p>
-          <button
-            className="text-funkyBlack  bg-funkyYellow mt-3"
-            onClick={() => setAlertVisible(false)}
-          >
-            Close
-          </button>
+          <div className="flex justify-center mt-3"> {/* Added flex and justify-center */}
+            <button
+              className="text-funkyBlack bg-funkyYellow"
+              onClick={() => setAlertVisible(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
+
       
       {/* Instructions Section */}
       <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto mb-5">
         <div className="p-5 text-white">
           {completed ? (
-            <div className="text-center">
+            <div className="text-center ">
+              <h1 className=" text-funkyYellow mb-4 font-bold"> Congratulations!</h1>
               <p className="text-lg text-funkyYellow mb-5">
-                Congratulations! You've completed the tutorial. Have fun experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
+                You've completed the tutorial. Have fun experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
               </p>
               <button
                 className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"
