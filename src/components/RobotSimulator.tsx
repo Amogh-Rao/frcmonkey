@@ -8,6 +8,8 @@ const RobotSimulator: React.FC = () => {
   const [robotSpeed, setRobotSpeed] = useState<number>(0);
   const [dialogStep, setDialogStep] = useState<number>(0);
   const [completed, setCompleted] = useState<boolean>(false);
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
 
   const normalizeCode = (str: string) =>
     str.replace(/\s+/g, " ").trim(); // Normalize for comparison.
@@ -15,55 +17,15 @@ const RobotSimulator: React.FC = () => {
   const tutorialSteps = [
     {
       instruction: "Step 1: Begin by creating the main `Robot` class and import necessary packages.",
-      requiredCode: `
-package frc.robot;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-      `,
+      requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;`,
     },
     {
       instruction: "Step 2: Declare the `CANSparkMax` motor and initialize it in the `robotInit` method.",
-      requiredCode: `
-package frc.robot;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-public class Robot extends TimedRobot {
-    private CANSparkMax motor;
-
-    @Override
-    public void robotInit() {
-        motor = new CANSparkMax(0, MotorType.kBrushless);
-    }
-}
-      `,
+      requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n}`,
     },
     {
       instruction: "Step 3: Implement the `teleopPeriodic` method to set the motor speed.",
-      requiredCode: `
-package frc.robot;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-public class Robot extends TimedRobot {
-    private CANSparkMax motor;
-
-    @Override
-    public void robotInit() {
-        motor = new CANSparkMax(0, MotorType.kBrushless);
-    }
-
-    @Override
-    public void teleopPeriodic() {
-        double some_dc = 0.5;
-        motor.set(some_dc);
-    }
-}
-      `,
+      requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n\n    @Override\n    public void teleopPeriodic() {\n        double some_dc = 0.5;\n        motor.set(some_dc);\n    }\n}`,
     },
   ];
 
@@ -77,7 +39,7 @@ public class Robot extends TimedRobot {
         setCompleted(true);
       }
     } else {
-      alert("Your code doesn't match the required code for this step. Please review and try again.");
+      showAlert("Your code doesn't match the required code for this step. Please review and try again.");
     }
   };
 
@@ -90,7 +52,7 @@ public class Robot extends TimedRobot {
 
   const handleCodeRun = () => {
     if (!completed && normalizeCode(code) !== normalizeCode(currentStep.requiredCode)) {
-      alert("Your code doesn't match the required code. Make sure it's correct before running.");
+      showAlert("Your code doesn't match the required code. Make sure it's correct before running.");
       return;
     }
 
@@ -113,18 +75,37 @@ public class Robot extends TimedRobot {
     setRobotSpeed(0);
   };
 
+  // Show the custom alert with a message
+  const showAlert = (message: string) => {
+    setAlertMessage(message);
+    setAlertVisible(true);
+  };
+
   return (
     <div className="bg-fu flex flex-col h-screen p-5">
+      {/* Custom Alert */}
+      {alertVisible && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-funkyBlack text-funkyYellow p-5 rounded-lg shadow-lg z-50">
+          <p>{alertMessage}</p>
+          <button
+            className="text-funkyBlack  bg-funkyYellow mt-3"
+            onClick={() => setAlertVisible(false)}
+          >
+            Close
+          </button>
+        </div>
+      )}
+      
       {/* Instructions Section */}
       <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto mb-5">
         <div className="p-5 text-white">
           {completed ? (
-            <div>
-              <p className="text-lg text-center text-funkyYellow">
+            <div className="text-center">
+              <p className="text-lg text-funkyYellow mb-5">
                 Congratulations! You've completed the tutorial. Have fun experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
               </p>
               <button
-                className="bg-funkyYellow text-black p-3 mt-5 rounded-lg shadow-md hover:bg-funkyGold"
+                className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"
                 onClick={handleRestart}
               >
                 Restart Tutorial
