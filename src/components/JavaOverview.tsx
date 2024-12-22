@@ -2,7 +2,7 @@ import React from 'react';
 
 const JavaOverview: React.FC = () => {
   return (
-    <div className="flex justify-center items-start">
+    <div className="flex justify-center h-screen items-start">
       <div className="bg-funkyGray rounded-lg p-6 max-w-screen-lg mt-5 mx-auto text-left">
         <h1 className="text-4xl font-bold text-funkyYellow mb-">Java Overview</h1>
         <p className="text-lg text-funkyYellow mb-8">

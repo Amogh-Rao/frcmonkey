@@ -1,10 +1,48 @@
-import React, { useState } from 'react';
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-java'; // Using Java mode
-import 'ace-builds/src-noconflict/theme-twilight';
+import React, { useState } from "react";
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-java"; // Using Java mode
+import "ace-builds/src-noconflict/theme-twilight";
 
 const RobotSimulator: React.FC = () => {
-  const [code, setCode] = useState<string>(`
+  const [code, setCode] = useState<string>("");
+  const [robotSpeed, setRobotSpeed] = useState<number>(0);
+  const [dialogStep, setDialogStep] = useState<number>(0);
+  const [completed, setCompleted] = useState<boolean>(false);
+
+  const normalizeCode = (str: string) =>
+    str.replace(/\s+/g, " ").trim(); // Normalize for comparison.
+
+  const tutorialSteps = [
+    {
+      instruction: "Step 1: Begin by creating the main `Robot` class and import necessary packages.",
+      requiredCode: `
+package frc.robot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+      `,
+    },
+    {
+      instruction: "Step 2: Declare the `CANSparkMax` motor and initialize it in the `robotInit` method.",
+      requiredCode: `
+package frc.robot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+public class Robot extends TimedRobot {
+    private CANSparkMax motor;
+
+    @Override
+    public void robotInit() {
+        motor = new CANSparkMax(0, MotorType.kBrushless);
+    }
+}
+      `,
+    },
+    {
+      instruction: "Step 3: Implement the `teleopPeriodic` method to set the motor speed.",
+      requiredCode: `
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,68 +63,111 @@ public class Robot extends TimedRobot {
         motor.set(some_dc);
     }
 }
-  `);
-
-  const instructions = [
-    "Welcome to the Robot Simulator! Edit the code on the left and visualize the motor's speed on the right.",
-    "Use the editor to modify motor behavior. Try changing the duty cycle in the teleopPeriodic method.",
-    "Click the 'Run Code' button to apply your changes and see the results in the simulator.",
-    "Experiment with different values to better understand how motor speed is controlled in FRC."
+      `,
+    },
   ];
 
-  const [robotSpeed, setRobotSpeed] = useState<number>(0.5);
-  const [dialogStep, setDialogStep] = useState<number>(0);
+  const currentStep = tutorialSteps[dialogStep];
 
-  // Function to simulate robot movement (visual feedback)
-  const handleCodeRun = () => {
-    const speedMatch = code.match(/double some_dc = (\d+(\.\d+)?);/);
-    if (speedMatch) {
-      setRobotSpeed(parseFloat(speedMatch[1])); // Extract and update speed from code
-    }
-  };
-  
   const handleNext = () => {
-    if (dialogStep < instructions.length - 1) {
-      setDialogStep(dialogStep + 1);
+    if (normalizeCode(code) === normalizeCode(currentStep.requiredCode)) {
+      if (dialogStep < tutorialSteps.length - 1) {
+        setDialogStep(dialogStep + 1);
+      } else {
+        setCompleted(true);
+      }
+    } else {
+      alert("Your code doesn't match the required code for this step. Please review and try again.");
     }
   };
 
-  // Handle previous instruction step
   const handlePrevious = () => {
     if (dialogStep > 0) {
       setDialogStep(dialogStep - 1);
+      setCode(tutorialSteps[dialogStep - 1].requiredCode.trim());
     }
+  };
+
+  const handleCodeRun = () => {
+    if (!completed && normalizeCode(code) !== normalizeCode(currentStep.requiredCode)) {
+      alert("Your code doesn't match the required code. Make sure it's correct before running.");
+      return;
+    }
+
+    const speedMatch = code.match(/double some_dc = (\d+(\.\d+)?);/);
+    if (speedMatch) {
+      setRobotSpeed(Math.min(parseFloat(speedMatch[1]), 1));
+    } else {
+      setRobotSpeed(0);
+    }
+
+    if (dialogStep === tutorialSteps.length - 1) {
+      setCompleted(true);
+    }
+  };
+
+  const handleRestart = () => {
+    setCompleted(false);
+    setDialogStep(0);
+    setCode(tutorialSteps[0].requiredCode.trim());
+    setRobotSpeed(0);
   };
 
   return (
     <div className="bg-fu flex flex-col h-screen p-5">
       {/* Instructions Section */}
-      <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto">
-      <div className="w-full max-w-4xl bg-funkyGray2 text-white text-center mx-auto rounded-lg mb-3">
-        <div className="bg-funkyGray2 rounded-lg p-5 mt-5">
-          <p className="text-lg text-funkyYellow mb-3">{instructions[dialogStep]}</p>
-          <div className="flex justify-between mt-3">
-            <button
-              className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
-              onClick={handlePrevious}
-              disabled={dialogStep === 0}
-            >
-              ← Previous
-            </button>
-            <button
-              className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
-              onClick={handleNext}
-              disabled={dialogStep === instructions.length - 1}
-            >
-              Next →
-            </button>
-          </div>
+      <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto mb-5">
+        <div className="p-5 text-white">
+          {completed ? (
+            <div>
+              <p className="text-lg text-center text-funkyYellow">
+                Congratulations! You've completed the tutorial. Have fun experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
+              </p>
+              <button
+                className="bg-funkyYellow text-black p-3 mt-5 rounded-lg shadow-md hover:bg-funkyGold"
+                onClick={handleRestart}
+              >
+                Restart Tutorial
+              </button>
+            </div>
+          ) : (
+            <>
+              <p className="text-lg text-funkyYellow mb-3">{currentStep.instruction}</p>
+              <div className="flex justify-between mt-3">
+                <button
+                  className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
+                  onClick={handlePrevious}
+                  disabled={dialogStep === 0}
+                >
+                  ← Previous
+                </button>
+                <div className="relative group">
+                  <button
+                    className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
+                  >
+                    Show Code
+                  </button>
+                  <div
+                    className="absolute top-full text-left bg-black text-white text-sm p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                    style={{ width: "470px" }}
+                  >
+                    <pre className="overflow-auto">{currentStep.requiredCode}</pre>
+                  </div>
+                </div>
+                <button
+                  className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
+                  onClick={handleNext}
+                >
+                  Next →
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
-      </div>
 
+      {/* Main Editor and Simulator Section */}
       <div className="bg-fu flex p-5 h-full">
-        {/* Left Column for the AceEditor */}
         <div className="flex-1 pr-5">
           <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">Robot Code</h2>
           <AceEditor
@@ -111,18 +192,18 @@ public class Robot extends TimedRobot {
           </div>
         </div>
 
-        {/* Right Column for the Visualization */}
         <div className="flex-1 pl-5 flex flex-col h-full justify-start">
           <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">Simulator</h2>
-
-          {/* Motor Speed Visualization */}
-          <div className="bg-funkyGray rounded-lg p-5 flex flex-col justify-center" style={{ height: 'calc(85vh - 350px)', width: '100%' }}>
+          <div
+            className="bg-funkyGray rounded-lg p-5 flex flex-col justify-center"
+            style={{ height: "calc(85vh - 350px)", width: "100%" }}
+          >
             <div className="w-full mb-3">
               <h3 className="text-center text-funkyYellow">Motor Speed</h3>
               <div className="relative w-full h-10 bg-black rounded-lg">
                 <div
                   className="absolute top-0 left-0 h-full bg-funkyYellow rounded-lg transition-all duration-300"
-                  style={{ width: `${Math.min(robotSpeed * 100, 100)}%` }}
+                  style={{ width: `${robotSpeed * 100}%` }}
                 ></div>
               </div>
             </div>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row items-start p-5 space-y-10 md:space-y-0 md:space-x-10 max-w-screen-2xl mx-auto">
+    <div className="flex flex-col md:flex-row items-start p-5 space-y-10 md:space-y-0 md:space-x-10 h-screen max-w-screen-2xl mx-auto">
       {/* Left Section - Stacked vertically */}
       <div className="flex flex-col space-y-6 w-full md:w-1/3">
         <div className="bg-funkyGray text-center rounded-lg p-5 flex-1">
@@ -59,13 +59,13 @@ const HomePage: React.FC = () => {
           </Link>
         </div>
         <div className="bg-funkyGray text-center rounded-lg p-3 flex-1">
-          <h4 className="text-xl font-bold text-funkyYellow">WPILib Documentation</h4>
-          <button 
-            className="w-full mt-3 bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
-            onClick={() => window.open('https://docs.wpilib.org/en/stable/', '_blank')}
+          <h4 className="text-xl font-bold text-funkyYellow">WPILib Basics</h4>
+          <Link 
+            to="/wpilib"
+            className="w-full mt-3 block bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold transition-colors duration-300"
           >
             Learn WPILib
-          </button>
+          </Link>
         </div>
       </div>
     </div>
