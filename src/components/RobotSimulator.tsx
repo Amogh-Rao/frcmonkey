@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java"; // Using Java mode
 import "ace-builds/src-noconflict/theme-twilight";
+import SimulationIntro from "./SimulationIntro"; // Import the SimulationIntro component
 
 const RobotSimulator: React.FC = () => {
   const [code, setCode] = useState<string>("");
@@ -10,21 +11,26 @@ const RobotSimulator: React.FC = () => {
   const [completed, setCompleted] = useState<boolean>(false);
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [introCompleted, setIntroCompleted] = useState<boolean>(false); // New state to track intro completion
 
   const normalizeCode = (str: string) =>
     str.replace(/\s+/g, " ").trim(); // Normalize for comparison.
 
   const tutorialSteps = [
     {
-      instruction: "Step 1: Begin by creating the main `Robot` class and import necessary packages.",
+      instruction:"In this simulation, you will learn how to write a basic java program to control a motor!",
+      requiredCode: ``,
+    },
+    {
+      instruction: "We will begin by creating the main `Robot` class and importing necessary packages. These imports will",
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;`,
     },
     {
-      instruction: "Step 2: Declare the `CANSparkMax` motor and initialize it in the `robotInit` method.",
+      instruction: "Next, We will import `CANSparkMax` and initialize a new motor in the `robotInit` method.",
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n}`,
     },
     {
-      instruction: "Step 3: Implement the `teleopPeriodic` method to set the motor speed.",
+      instruction: "Then, we will implement the `teleopPeriodic` method to set the motor speed.",
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n\n    @Override\n    public void teleopPeriodic() {\n        double some_dc = 0.5;\n        motor.set(some_dc);\n    }\n}`,
     },
   ];
@@ -79,11 +85,17 @@ const RobotSimulator: React.FC = () => {
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
+  };
 
+  const handleIntroComplete = () => {
+    setIntroCompleted(true); // Set intro as completed when it's clicked
   };
 
   return (
     <div className="bg-fu flex flex-col h-screen p-5">
+      {/* Display the SimulationIntro if it has not been completed */}
+      {!introCompleted && <SimulationIntro onComplete={handleIntroComplete} />}
+
       {/* Custom Alert */}
       {alertVisible && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-funkyBlack text-funkyYellow p-5 rounded-lg shadow-lg z-50">
@@ -99,7 +111,6 @@ const RobotSimulator: React.FC = () => {
         </div>
       )}
 
-      
       {/* Instructions Section */}
       <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto mb-5">
         <div className="p-5 text-white">
@@ -107,7 +118,7 @@ const RobotSimulator: React.FC = () => {
             <div className="text-center ">
               <h1 className=" text-funkyYellow mb-4 font-bold"> Congratulations!</h1>
               <p className="text-lg text-funkyYellow mb-5">
-                You've completed the tutorial. Have fun experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
+                You've completed the tutorial. Try experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
               </p>
               <button
                 className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"
@@ -131,7 +142,7 @@ const RobotSimulator: React.FC = () => {
                   <button
                     className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
                   >
-                    Show Code
+                    Show Expected Code
                   </button>
                   <div
                     className="absolute top-full text-left bg-black text-white text-sm p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-50"

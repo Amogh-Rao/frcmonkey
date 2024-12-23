@@ -29,8 +29,7 @@ function App() {
 
             {/* Title and Subtitle */}
             <div className="text-center flex-grow">
-              <h1 className="text-4xl font-bold">FRCMonkey</h1>
-              <p className="text-xl">An interactive tool to learn robot code!</p>
+            <h1 className="text-3xl font-bold">FRCMonkey</h1>
             </div>
           </header>
 

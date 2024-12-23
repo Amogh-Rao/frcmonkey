@@ -18,7 +18,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onFinish }) => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-screen h-screen bg-funkyGray2 flex flex-col justify-center items-center z-50"
+      className="fixed top-0 left-0 w-screen h-screen bg-funkyGray flex flex-col justify-center items-center z-50"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

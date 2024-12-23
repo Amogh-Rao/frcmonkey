@@ -3,7 +3,7 @@ import React from 'react';
 const GitOverview: React.FC = () => {
   return (
     <div className="flex justify-center items-start">
-      <div className="bg-funkyGray rounded-lg p-6 max-w-screen-lg mt-5 mx-auto text-left">
+      <div className="bg-funkyGray h-screen rounded-lg p-6 max-w-screen-lg mt-5 mx-auto text-left">
         <h1 className="text-4xl font-bold text-funkyYellow mb-3">Git Overview</h1>
         <p className="text-lg text-funkyYellow mb-8">
           Git is a version control system that helps teams manage and track changes in their codebase. It is essential for collaborative development and ensures your code history is preserved.
