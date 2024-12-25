@@ -10,7 +10,7 @@ const WPILib: React.FC = () => {
         </p>
 
         {/* Why Learn WPILib */}
-        <h2 className="text-2xl font-bold text-funkyYellow mt-5">Why Learn WPILib?</h2>
+        <h2 className="text-2xl font-bold text-funkyYellow mb-2 *:mt-5">Why Learn WPILib?</h2>
         <p className="text-lg text-funkyYellow mb-8">
           WPILib empowers you to control and automate your robot effectively. It simplifies complex tasks, such as motor control, sensor integration, and vision processing, allowing you to focus on building robust solutions.
         </p>
@@ -28,7 +28,7 @@ const WPILib: React.FC = () => {
         </ul>
 
         {/* Setup */}
-        <h2 className="text-2xl font-bold text-funkyYellow mt-5">Setup:</h2>
+        <h2 className="text-2xl font-bold text-funkyYellow mb-2 mt-5">Setup:</h2>
         <p className="text-lg text-funkyYellow mb-8">
           To get started with WPILib, follow the setup instructions at the official{' '}
           <a
@@ -51,11 +51,11 @@ const WPILib: React.FC = () => {
 
         {/* TimedRobot vs Command-Based */}
         <h2 className="text-2xl font-bold text-funkyYellow mt-5">TimedRobot vs Command-Based:</h2>
-        <h3 className="text-xl font-semibold text-funkyGold mt-4 mb-2">TimedRobot</h3>
+        <h3 className="text-xl font-semibold text-funkyGold mt-4 mb-1">TimedRobot</h3>
         <p className="text-lg text-funkyYellow mb-8">
           TimedRobot is ideal for simple robots controlled using periodic methods. However, as your robot becomes more complex, this method can lead to messy and unorganized code.
         </p>
-        <h3 className="text-xl font-semibold text-funkyGold mt-4 mb-2">Command-Based</h3>
+        <h3 className="text-xl font-semibold text-funkyGold mt-4 mb-1">Command-Based</h3>
         <p className="text-lg text-funkyYellow mb-8">
           The Command-Based framework provides a cleaner, object-oriented approach. It allows you to define <strong>Subsystems</strong> (robot components) and <strong>Commands</strong> (actions), which the Command Scheduler runs efficiently.
         </p>

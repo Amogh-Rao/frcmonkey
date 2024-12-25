@@ -5,7 +5,7 @@ import "ace-builds/src-noconflict/theme-twilight";
 import SimulationIntro from "./SimulationIntro"; // Import the SimulationIntro component
 
 const RobotSimulator: React.FC = () => {
-  const [code, setCode] = useState<string>("package frc.robot");
+  const [code, setCode] = useState<string>("package frc.robot;");
   const [robotSpeed, setRobotSpeed] = useState<number>(0);
   const [dialogStep, setDialogStep] = useState<number>(0);
   const [completed, setCompleted] = useState<boolean>(false);
@@ -131,8 +131,8 @@ const RobotSimulator: React.FC = () => {
                 Congratulations!
               </h1>
               <p className="text-lg text-funkyYellow mb-5">
-                You've completed the tutorial! Try modifying the motor speed in 
-                <i> teleopPeriodic</i>.
+                You've completed the tutorial! It's finally time to run your code and watch the magic happen. Try experimenting with <i>some_dc</i> in 
+                <i> teleopPeriodic</i> and observe how the motor speed changes!
               </p>
               <button
                 className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"

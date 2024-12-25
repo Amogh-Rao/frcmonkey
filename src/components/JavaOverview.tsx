@@ -4,13 +4,13 @@ const JavaOverview: React.FC = () => {
   return (
     <div className="flex justify-center h-screen items-start">
       <div className="bg-funkyGray rounded-lg p-6 max-w-screen-lg mt-5 mx-auto text-left">
-        <h1 className="text-4xl font-bold text-funkyYellow mb-">Java Overview</h1>
+        <h1 className="text-4xl font-bold text-funkyYellow mb-2">Java Overview</h1>
         <p className="text-lg text-funkyYellow mb-8">
           Java is a versatile programming language widely used for FRC robot programming. It offers object-oriented principles, strong typing, and powerful libraries, making it an excellent choice for controlling robots.
         </p>
 
         {/* Why Learn Java */}
-        <h2 className="text-2xl font-bold text-funkyYellow mt-5">Why Learn Java?</h2>
+        <h2 className="text-2xl font-bold text-funkyYellow mb-2 mt-5">Why Learn Java?</h2>
         <p className="text-lg text-funkyYellow mb-8">
           Java is one of the main languages supported by WPILib, the library that controls most FRC robots. It’s cross-platform, has extensive documentation, and is beginner-friendly. Mastering Java will give you the confidence  & skillset to tackle FRC challenges and beyond!
         </p>
@@ -26,7 +26,7 @@ const JavaOverview: React.FC = () => {
         </ul>
 
         {/* Example Code */}
-        <h2 className="text-2xl font-bold text-funkyYellow mt-5">Example Code:</h2>
+        <h2 className="text-2xl font-bold text-funkyYellow mb-2 mt-5">Example Code:</h2>
         <div className="bg-black text-white rounded-lg p-4 text-left font-mono text-sm overflow-x-auto mb-5">
           <code>
             {`public class HelloWorld {
