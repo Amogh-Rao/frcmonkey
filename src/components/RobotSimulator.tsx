@@ -5,7 +5,7 @@ import "ace-builds/src-noconflict/theme-twilight";
 import SimulationIntro from "./SimulationIntro"; // Import the SimulationIntro component
 
 const RobotSimulator: React.FC = () => {
-  const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string>("package frc.robot");
   const [robotSpeed, setRobotSpeed] = useState<number>(0);
   const [dialogStep, setDialogStep] = useState<number>(0);
   const [completed, setCompleted] = useState<boolean>(false);
@@ -18,19 +18,29 @@ const RobotSimulator: React.FC = () => {
 
   const tutorialSteps = [
     {
-      instruction:"In this simulation, you will learn how to write a basic java program to control a motor!",
-      requiredCode: ``,
+      instruction: `In this simulation, you'll learn how to write Java code to control a motor using the <i>TimedRobot</i> framework.
+      
+      Let's start by adding the package declaration. This tells Java where this class belongs. For our program today, let's call the package <i>frc.robot</i>.`,
+      requiredCode: `package frc.robot;`,
     },
     {
-      instruction: "We will begin by creating the main `Robot` class and importing necessary packages. These imports will",
+      instruction: `Next, we will import the <i>TimedRobot</i> library. This library provides a structured way to create and manage a robot program in FRC.`,
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;`,
     },
     {
-      instruction: "Next, We will import `CANSparkMax` and initialize a new motor in the `robotInit` method.",
+      instruction: `Now, let's create a new class called <i>Robot</i> that extends <i>TimedRobot</i>. The <i>TimedRobot</i> class allows us to implement methods that are automatically called during different phases of the robot's operation, like initialization and the teleoperated (manual controlled) time periods.`,
+      requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\n\npublic class Robot extends TimedRobot {\n\n}`,
+    },
+    {
+      instruction: `Now that we have our main class, let's prepare for motor control! We will need to import some more libraries for working with a motor controller. Import <i>CANSparkMax</i> and <i>CANSparkMaxLowLevel</i> into your program (Click "Show Expected Code" for guidance).`,
+      requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n\n}`,
+    },
+    {
+      instruction: `Now, we will declare a motor object as a class-level variable in the <i>TimedRobot</i> method. This object represents the motor we want to control. In the <i>robotInit</i> method, we will initialize the motor, specifying its ID (0) and type (brushless motor).`,
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n}`,
     },
     {
-      instruction: "Then, we will implement the `teleopPeriodic` method to set the motor speed.",
+      instruction: `Finally, we will implement the <i>teleopPeriodic</i> method. This method runs repeatedly while the robot is under manual control. We will set the motor speed using a variable called <i>some_dc</i>, which stands for some_DutyCycle. This value ranges from -1 (full speed reverse) to 1 (full speed forward).`,
       requiredCode: `package frc.robot;\n\nimport edu.wpi.first.wpilibj.TimedRobot;\nimport com.revrobotics.CANSparkMax;\nimport com.revrobotics.CANSparkMaxLowLevel.MotorType;\n\npublic class Robot extends TimedRobot {\n    private CANSparkMax motor;\n\n    @Override\n    public void robotInit() {\n        motor = new CANSparkMax(0, MotorType.kBrushless);\n    }\n\n    @Override\n    public void teleopPeriodic() {\n        double some_dc = 0.5;\n        motor.set(some_dc);\n    }\n}`,
     },
   ];
@@ -45,7 +55,9 @@ const RobotSimulator: React.FC = () => {
         setCompleted(true);
       }
     } else {
-      showAlert("Your code doesn't match the required code for this step. Please review and try again.");
+      showAlert(
+        "Your code doesn't match the required code for this step. Please review and try again."
+      );
     }
   };
 
@@ -57,8 +69,13 @@ const RobotSimulator: React.FC = () => {
   };
 
   const handleCodeRun = () => {
-    if (!completed && normalizeCode(code) !== normalizeCode(currentStep.requiredCode)) {
-      showAlert("Your code doesn't match the required code. Make sure it's correct before running.");
+    if (
+      !completed &&
+      normalizeCode(code) !== normalizeCode(currentStep.requiredCode)
+    ) {
+      showAlert(
+        "Your code doesn't match the required code. Make sure it's correct before running."
+      );
       return;
     }
 
@@ -81,26 +98,22 @@ const RobotSimulator: React.FC = () => {
     setRobotSpeed(0);
   };
 
-  // Show the custom alert with a message
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
   };
 
   const handleIntroComplete = () => {
-    setIntroCompleted(true); // Set intro as completed when it's clicked
+    setIntroCompleted(true);
   };
 
   return (
     <div className="bg-fu flex flex-col h-screen p-5">
-      {/* Display the SimulationIntro if it has not been completed */}
       {!introCompleted && <SimulationIntro onComplete={handleIntroComplete} />}
-
-      {/* Custom Alert */}
       {alertVisible && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-funkyBlack text-funkyYellow p-5 rounded-lg shadow-lg z-50">
+        <div className="fixed top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 bg-funkyBlack text-funkyYellow p-5 rounded-lg shadow-lg z-50">
           <p>{alertMessage}</p>
-          <div className="flex justify-center mt-3"> {/* Added flex and justify-center */}
+          <div className="flex justify-center mt-3">
             <button
               className="text-funkyBlack bg-funkyYellow"
               onClick={() => setAlertVisible(false)}
@@ -110,15 +123,16 @@ const RobotSimulator: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Instructions Section */}
-      <div className="bg-funkyGray rounded-lg max-w-3xl mx-auto mb-5">
+      <div className="bg-funkyGray font-semibold rounded-lg max-w-3xl mx-auto mb-5">
         <div className="p-5 text-white">
           {completed ? (
-            <div className="text-center ">
-              <h1 className=" text-funkyYellow mb-4 font-bold"> Congratulations!</h1>
+            <div className="text-center">
+              <h1 className="text-funkyYellow mb-4 font-bold">
+                Congratulations!
+              </h1>
               <p className="text-lg text-funkyYellow mb-5">
-                You've completed the tutorial. Try experimenting with different values in the `teleopPeriodic` method by changing 'some_dc'!
+                You've completed the tutorial! Try modifying the motor speed in 
+                <i> teleopPeriodic</i>.
               </p>
               <button
                 className="bg-funkyYellow text-black p-3 rounded-lg shadow-md hover:bg-funkyGold"
@@ -129,7 +143,9 @@ const RobotSimulator: React.FC = () => {
             </div>
           ) : (
             <>
-              <p className="text-lg text-funkyYellow mb-3">{currentStep.instruction}</p>
+              <p className="text-lg text-funkyYellow mb-3">
+                <span dangerouslySetInnerHTML={{ __html: currentStep.instruction }} />
+              </p>
               <div className="flex justify-between mt-3">
                 <button
                   className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
@@ -138,19 +154,21 @@ const RobotSimulator: React.FC = () => {
                 >
                   ← Previous
                 </button>
-                <div className="relative group">
-                  <button
-                    className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
-                  >
-                    Show Expected Code
-                  </button>
-                  <div
-                    className="absolute top-full text-left bg-black text-white text-sm p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-50"
-                    style={{ width: "470px" }}
-                  >
-                    <pre className="overflow-auto">{currentStep.requiredCode}</pre>
+                {dialogStep > 0 && (
+                  <div className="relative group">
+                    <button className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold">
+                      Show Expected Code
+                    </button>
+                    <div
+                      className="absolute top-full text-left bg-black text-white text-sm p-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-50"
+                      style={{ width: "470px" }}
+                    >
+                      <pre className="overflow-auto">
+                        {currentStep.requiredCode}
+                      </pre>
+                    </div>
                   </div>
-                </div>
+                )}
                 <button
                   className="bg-funkyYellow text-black p-2 rounded-lg shadow-md hover:bg-funkyGold"
                   onClick={handleNext}
@@ -162,11 +180,11 @@ const RobotSimulator: React.FC = () => {
           )}
         </div>
       </div>
-
-      {/* Main Editor and Simulator Section */}
       <div className="bg-fu flex p-5 h-full">
         <div className="flex-1 pr-5">
-          <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">Robot Code</h2>
+          <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">
+            Robot Code
+          </h2>
           <AceEditor
             mode="java"
             theme="twilight"
@@ -188,9 +206,10 @@ const RobotSimulator: React.FC = () => {
             </button>
           </div>
         </div>
-
         <div className="flex-1 pl-5 flex flex-col h-full justify-start">
-          <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">Simulator</h2>
+          <h2 className="text-3xl text-funkyYellow font-bold text-center mb-5">
+            Simulator
+          </h2>
           <div
             className="bg-funkyGray rounded-lg p-5 flex flex-col justify-center"
             style={{ height: "calc(85vh - 350px)", width: "100%" }}
@@ -204,7 +223,9 @@ const RobotSimulator: React.FC = () => {
                 ></div>
               </div>
             </div>
-            <p className="text-center text-funkyYellow">{robotSpeed * 100}% Speed</p>
+            <p className="text-center text-funkyYellow">
+              {robotSpeed * 100}% Speed
+            </p>
           </div>
         </div>
       </div>
